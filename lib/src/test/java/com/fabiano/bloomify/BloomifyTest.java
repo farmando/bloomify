@@ -6,17 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import com.fabiano.bloomify.strategy.LocalStorage;
 import java.util.List;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 class BloomifyTest {
   private Bloomify bloomify;
@@ -71,7 +68,7 @@ class BloomifyTest {
     return Stream.of(
             arguments(1, 0.00),
             arguments(0, 0.01),
-            arguments(0, 1.01)
+            arguments(1, 1.01)
     );
   }
 }
