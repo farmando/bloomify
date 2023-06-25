@@ -16,7 +16,7 @@ class BloomifyTest {
 
   @BeforeEach
   public void setUp() {
-    bloomify = new Bloomify(10000000, 0.01);
+    bloomify = new Bloomify(1_000_000, 0.01);
   }
 
   @Test

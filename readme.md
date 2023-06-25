@@ -31,7 +31,7 @@ results (which can be limited).
 - Create an instance of Bloomify by specifying the expected number of insertions and the desired false positive rate:
 
 ```
-int expectedInsertions = 1000;
+int expectedInsertions = 1_000_000;
 double falsePositiveRate = 0.01;
 Bloomify bloomify = new Bloomify(expectedInsertions, falsePositiveRate);
 ```
@@ -92,15 +92,13 @@ The Bloomify library provides efficient and memory-optimized operations. However
 
 This project is licensed under the MIT License.
 
-Feel free to contribute to the project by opening issues or submitting pull requests on the GitHub repository.
-
 ### Contributing
 
 Contributions to Bloomify are welcome! If you find any issues, have suggestions for improvements, or would like to add new features, please create a pull request or open an issue on the GitHub repository.
 
 ### Acknowledgments
 
-Bloomify was developed by Fabiano Armando as a showcase of skills and to provide a useful tool for others. Thank you to the open-source community for the inspiration and valuable resources.
+Bloomify was developed by **Fabiano Armando** as a showcase of skills and to provide a useful tool for others. Thank you to the open-source community for the inspiration and valuable resources.
 
 ### References
 
