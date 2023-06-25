@@ -1,0 +1,43 @@
+node {
+    environment {
+            GH_TOKEN = credentials('token-release').getToken()
+            GITHUB_ACTOR = 'farmando'
+            GITHUB_TOKEN = credentials('ebee7720-95c7-4a80-b181-1b6019961050')
+    }
+
+    stage('checkout') {
+        checkout scm
+    }
+
+    stage ('Build and run unit tests') {
+        sh './gradlew clean build'
+        script {
+            def versionToBuild = sh script:'./gradlew showCurrentVersion | awk \'/version:/ {print $2}\'', returnStdout: true
+            println "building version : ${versionToBuild}"
+            VERSION_TO_BUILD = versionToBuild.trim()
+        }
+    }
+
+    stage('SonarQube analysis') {
+        def scannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+          withCredentials([string(credentialsId: 'sonarqube', variable: 'sonarLogin')]) {
+            sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.login=${sonarLogin} -Dsonar.projectName=bloomify -Dsonar.projectVersion=${VERSION_TO_BUILD} -Dsonar.host.url=http://sonarqube:9000 -Dsonar.projectKey=develop -Dsonar.sources=./lib/src/main/ -Dsonar.language=java -Dsonar.qualitygate.wait=true -Dsonar.java.binaries=."
+          }
+     }
+
+    stage('Release new version') {
+        script {
+            withCredentials([string(credentialsId: 'token-release', variable: 'GH_TOKEN')]) {
+                sh 'export GH_TOKEN=${GH_TOKEN} && ./gradlew releaseNewVersion'
+                sh 'gh release create $(./gradlew showCurrentVersion | awk \'/version:/ {print $2}\') -F changelog.md'
+            }
+        }
+    }
+
+    stage('Package new version') {
+        withCredentials([usernamePassword(credentialsId: 'ebee7720-95c7-4a80-b181-1b6019961050', usernameVariable: 'GITHUB_ACTOR', passwordVariable: 'GITHUB_TOKEN')]) {
+            sh './gradlew publish'
+            sh './gradlew increasePatchVersion'
+        }
+    }
+}
