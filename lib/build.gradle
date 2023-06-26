@@ -140,7 +140,8 @@ tasks.register('releaseNewVersion') {
         println "Releasing for ${snapshotVersion}"
         if (snapshotVersion.indexOf('-SNAPSHOT') > 0) {
             def stableProjectVersion = snapshotVersion - '-SNAPSHOT'
-            def gradleProperties = project.property('gradle')
+            def gradleProperties = new Properties()
+            gradleProperties.load(new FileInputStream(System.getProperty("user.home") + '/.gradle/gradle.properties'))
             exec {
                 executable = 'sed'
                 args = ['-i', "s/${gradleProperties.version}/${stableProjectVersion}/g", "${System.getProperty("user.home")}/.gradle/gradle.properties"]
