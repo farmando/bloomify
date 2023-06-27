@@ -34,7 +34,10 @@ node {
         }
     }
 
-    stage('increase Patch Version') {
-        sh './gradlew increasePatchVersion'
-    }
+    stage('Package new version') {
+            withCredentials([usernamePassword(credentialsId: 'bloomify', usernameVariable: 'GITHUB_ACTOR', passwordVariable: 'GITHUB_TOKEN')]) {
+                sh './gradlew publish'
+                sh './gradlew increasePatchVersion'
+            }
+        }
 }
