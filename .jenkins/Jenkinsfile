@@ -2,7 +2,7 @@ node {
     environment {
             GH_TOKEN = credentials('token-release').getToken()
             GITHUB_ACTOR = 'farmando'
-            GITHUB_TOKEN = credentials('bloomify')
+            GITHUB_TOKEN = credentials('bloomify-token')
     }
 
     stage('checkout') {
@@ -35,7 +35,7 @@ node {
     }
 
     stage('Package new version') {
-            withCredentials([usernamePassword(credentialsId: 'bloomify', usernameVariable: 'GITHUB_ACTOR', passwordVariable: 'GITHUB_TOKEN')]) {
+            withCredentials([usernamePassword(credentialsId: 'bloomify-token', usernameVariable: 'GITHUB_ACTOR', passwordVariable: 'GITHUB_TOKEN')]) {
                 sh './gradlew publish'
                 sh './gradlew increasePatchVersion'
             }
