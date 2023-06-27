@@ -57,7 +57,7 @@ publishing {
     }
     publications {
         maven(MavenPublication) {
-            groupId = "com.fabiano.bloom"
+            groupId = "com.fabiano.bloomfilter"
             artifactId = "bloomify"
             version = project.version
             from(components.java)
